@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<title> Cercador codis postals </title>
+<body>
+	
+	<h1> Cercador codis postals </h1>
+
+	Codi postal:<input type="text" id="text_cp">
+	<br />
+	Num. resultats: <input type="text" id="text_resultats">
+	<br/>
+
+	<input type="button" value="Click" id="the_button">
+	<br />
+	<br />
+
+<table id="taula-cps">
+	<thead>
+		<tr>
+			<th>Codi Postal</th>
+			<th>Ciutat</th>
+		</tr>
+	</thead>
+	<tbody id="dades-taula">
+		<tr>
+			<td>cp prova</td>
+			<td>ciutat prova</td>
+		</tr>
+	</tbody>
+</table>
+
+	<script>
+
+		document
+		.getElementById("the_button")
+		.addEventListener("click",() =>{
+
+			var cp=document.getElementById("text_cp").value;
+
+			var nresultats= document.getElementById("text_resultats").value;
+
+			var url='http://api.geonames.org/postalCodeSearchJSON?postalcode_startsWith='+cp+'&country=ES&maxRows='+nresultats+'&username=nelaq_';
+
+			console.log(url);
+
+			fetch(url)
+			.then(resposta => resposta.json ())
+			.then(json => {
+				html=""
+				json.postalCodes.forEach(function(element){
+					console.log(element.placeName);
+
+					html +="<tr>";
+					html += "<td>"+element.postalCode+"</td>";
+					html += "<td>"+element.placeName+"</td>";
+					html += "</tr>";
+				});
+
+				console.log(html);
+
+							document
+							.getElementById("dades-taula")
+							.innerHTML = html;
+			})
+			.catch(error => console.log (error));
+
+		});
+	</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
